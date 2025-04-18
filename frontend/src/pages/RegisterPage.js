@@ -5,10 +5,17 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle registration logic here
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register', { username, email, password });
+      alert(response.data.msg);
+      history.push('/login');
+    } catch (error) {
+      setErrorMessage(error.response.data.msg || 'Registration failed');
+    }
   };
+  
 
   return (
     <div className="register-page">
@@ -35,3 +42,5 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+
+

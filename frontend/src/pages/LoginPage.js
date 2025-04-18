@@ -5,10 +5,18 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      localStorage.setItem('authToken', response.data.token); // Store JWT token in localStorage
+      alert(response.data.msg);
+      history.push('/dashboard');
+    } catch (error) {
+      setErrorMessage(error.response.data.msg || 'Login failed');
+    }
   };
+  
 
   return (
     <div className="login-page">
